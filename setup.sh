@@ -36,8 +36,7 @@ echo "systems and common Unix services to be easily administered."
 echo ""
 
 # Only root can run this
-id | grep -i "uid=0(" >/dev/null
-if [ $? != "0" ]; then
+if [ `id -u` -gt 0 ]; then
 	uname -a | grep -i CYGWIN >/dev/null
 	if [ $? != "0" ]; then
 		echo "ERROR: The Webmin install script must be run as root";
@@ -51,7 +50,7 @@ if [ "$1" != "" ]; then
 	wadir=$1
 	echo "Installing Webmin from $srcdir to $wadir ..."
 	if [ ! -d "$wadir" ]; then
-		mkdir "$wadir"
+		mkdir -p "$wadir"
 		if [ "$?" != "0" ]; then
 			echo "ERROR: Failed to create $wadir"
 			echo ""
@@ -112,7 +111,7 @@ if [ "$abspath" = "" ]; then
 	exit 2
 fi
 if [ ! -d $config_dir ]; then
-	mkdir $config_dir;
+	mkdir -p $config_dir;
 	if [ $? != 0 ]; then
 		echo "ERROR: Failed to create directory $config_dir"
 		echo ""
@@ -229,7 +228,7 @@ else
 		exit 3
 	fi
 	if [ ! -d $var_dir ]; then
-		mkdir $var_dir
+		mkdir -p $var_dir
 		if [ $? != 0 ]; then
 			echo "ERROR: Failed to create directory $var_dir"
 			echo ""
